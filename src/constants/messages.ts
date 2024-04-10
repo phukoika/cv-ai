@@ -14,5 +14,7 @@ export const USERS_MESSAGES = {
   CONFIRM_PASSWORD_LENG_MUST_BE_FROM_6_TO_50: 'Confirm password length must be from 6 to 50 characters',
   CONFIRM_PASSWORD_MUST_BE_STRONG:
     'Confirm password must be 6-50 characters long and contains at least 1 lowercase letter, 1 uppercase letter, 1 number and 1 symbol',
-  CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD: 'Confirm password must be the same as password'
+  CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD: 'Confirm password must be the same as password',
+  LOGIN_SUCCESS: 'Login successful',
+  REGISTER_SUCCESS: 'Register successful'
 }

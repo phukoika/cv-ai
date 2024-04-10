@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb'
 import { TokenType } from '~/constants/enums'
 import { RegisterReqBody } from '~/models/requests/User.requests'
+import RefreshToken from '~/models/schemas/RefreshToken.schema'
 import User from '~/models/schemas/User.schema'
 import databaseService from '~/services/database.services'
 import { hashPassword } from '~/utils/crypto'
@@ -28,6 +30,9 @@ class UsersService {
       }
     })
   }
+  private signAccessAndRefreshToken(user_id: string) {
+    return Promise.all([this.signAccessToken(user_id), this.signRefreshToken(user_id)])
+  }
   async register(payload: RegisterReqBody) {
     const result = await databaseService.users.insertOne(
       new User({
@@ -48,6 +53,16 @@ class UsersService {
   async checkEmailExist(email: string) {
     const user = await databaseService.users.findOne({ email })
     return Boolean(user)
+  }
+  async login(user_id: string) {
+    const [access_token, refresh_token] = await this.signAccessAndRefreshToken(user_id)
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token as string })
+    )
+    return {
+      access_token,
+      refresh_token
+    }
   }
 }
 
